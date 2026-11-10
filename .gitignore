@@ -1,0 +1,5 @@
+node_modules/
+test/shots/
+# design notes with personal usage details stay on this computer
+PRODUCT.md
+.impeccable/

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#17171b">
+<meta name="color-scheme" content="dark light">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="סידור">
+<meta name="description" content="סידור נוסח עדות המזרח עם חיפוש. עובד גם בלי אינטרנט.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="preload" href="fonts/rubik-hebrew-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="app.css">
+<title>סידור</title>
+</head>
+<body data-view="home">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.6-4.6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r=".6"/><circle cx="4.5" cy="12" r=".6"/><circle cx="4.5" cy="18" r=".6"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.6 2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/></symbol>
+  <symbol id="i-type" viewBox="0 0 24 24"><path d="M3 19 8.5 5h1L15 19M5.2 14h7.6M15.5 19l3.2-8h.6l3.2 8M16.6 16.4h4.8"/></symbol>
+</svg>
+
+<main id="home">
+  <div class="board-head">
+    <header class="top">
+      <h1 class="brand"><b>סידור</b> <span>נוסח עדות המזרח</span></h1>
+      <button class="icon-btn" popovertarget="settings" aria-label="גודל טקסט ותצוגה"><svg class="ic"><use href="#i-type"/></svg></button>
+    </header>
+    <div class="search" role="search">
+      <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+      <input id="q" type="search" placeholder="חפש ברכה או תפילה" aria-label="חפש ברכה או תפילה, לפי שם או מילים מתוכה" enterkeyhint="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <button id="clear" class="clear" hidden aria-label="נקה חיפוש"><svg class="ic"><use href="#i-x"/></svg></button>
+    </div>
+  </div>
+  <div id="results" aria-live="polite"></div>
+  <div id="board">
+    <p id="hint" class="hint" hidden>להתקנה באייפון: בספארי לוחצים על <b>שיתוף</b> ואז על <b>הוספה למסך הבית</b>. אחרי זה הסידור עובד גם בלי אינטרנט. <button id="hint-close">הבנתי</button></p>
+    <div id="resume"></div>
+    <section id="now" class="sec"></section>
+    <section id="meal" class="sec"></section>
+    <section id="favs" class="sec"></section>
+    <section id="recent" class="sec"></section>
+    <section id="more" class="sec"></section>
+    <section id="toc" class="sec"></section>
+  </div>
+  <p id="status" class="status" hidden></p>
+</main>
+
+<div id="reader">
+  <header class="r-bar">
+    <button id="back" class="icon-btn" aria-label="חזרה ללוח"><svg class="ic"><use href="#i-back"/></svg></button>
+    <p class="r-titles"><span id="r-chapter"></span><span id="r-item"></span></p>
+    <button id="jump" class="icon-btn" popovertarget="jump-pop" aria-label="התפילות בפרק"><svg class="ic"><use href="#i-list"/></svg></button>
+    <button id="fav" class="icon-btn" aria-pressed="false" aria-label="הוסף למועדפים"><svg class="ic"><use href="#i-star"/></svg></button>
+    <button class="icon-btn" popovertarget="settings" aria-label="גודל טקסט ותצוגה"><svg class="ic"><use href="#i-type"/></svg></button>
+  </header>
+  <article id="text"></article>
+  <nav id="pager" aria-label="פרקים"></nav>
+</div>
+
+<div id="jump-pop" class="pop" popover>
+  <p class="pop-h">בפרק הזה</p>
+  <nav id="jump-list"></nav>
+</div>
+
+<div id="settings" class="pop" popover>
+  <p class="pop-h">גודל הטקסט</p>
+  <div class="fs">
+    <button id="fs-down" aria-label="הקטן טקסט"><span class="fs-small">א</span></button>
+    <output id="fs-val">100%</output>
+    <button id="fs-up" aria-label="הגדל טקסט"><span class="fs-big">א</span></button>
+  </div>
+  <p class="pop-h">צבע דף הקריאה</p>
+  <div class="seg" role="group" aria-label="צבע דף הקריאה">
+    <button data-set-theme="auto">לפי הטלפון</button>
+    <button data-set-theme="light">בהיר</button>
+    <button data-set-theme="dark">כהה</button>
+  </div>
+  <label class="switch"><input type="checkbox" id="wake-toggle"><span class="switch-ui" aria-hidden="true"></span>המסך לא נכבה בזמן קריאה</label>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

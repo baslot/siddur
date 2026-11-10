@@ -1,0 +1,16 @@
+{
+  "name": "siddur",
+  "version": "1.0.0",
+  "private": true,
+  "description": "סידור עדות המזרח — אפליקציית רשת לאייפון עם חיפוש, עובדת גם בלי אינטרנט",
+  "type": "module",
+  "scripts": {
+    "fetch": "node scripts/fetch.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "@fontsource/frank-ruhl-libre": "5.3.0",
+    "@fontsource/rubik": "5.3.0",
+    "puppeteer-core": "^23.11.1"
+  }
+}
